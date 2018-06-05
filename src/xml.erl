@@ -48,7 +48,7 @@ load_nif() ->
     end.
 
 %%
--spec(element_to_binary/1 ::
+-spec(element_to_binary
 (
   El :: xmlel() | cdata())
     -> binary()
@@ -69,7 +69,7 @@ crypt(S) ->
        || <<C>> <= S >>.
 
 %%
--spec(remove_cdata_p/1 ::
+-spec(remove_cdata_p
 (
   El :: xmlel() | cdata())
     -> boolean()
@@ -79,7 +79,7 @@ remove_cdata_p(#xmlel{}) -> true;
 remove_cdata_p(_) -> false.
 
 %%
--spec(remove_cdata/1 ::
+-spec(remove_cdata
 (
   L :: [xmlel() | cdata()])
     -> [xmlel()]
@@ -90,7 +90,7 @@ remove_cdata(L) -> [E || E <- L, remove_cdata_p(E)].
 %% This function is intended to remove subtags based on a name and an
 %% attribute, usually an xmlns attribute for a specific XMPP
 %% extension.
--spec(remove_subtags/3 ::
+-spec(remove_subtags
 (
   Xmlel :: xmlel(),
   Name  :: binary(),
@@ -104,7 +104,7 @@ remove_subtags(#xmlel{name = TagName, attrs = TagAttrs, children = Els},
         children = remove_subtags1(Els, [], Name, Attr)}.
 
 %%
--spec(remove_subtags1/4 ::
+-spec(remove_subtags1
 (
   Els    :: [xmlel() | cdata()],
   NewEls :: [xmlel()],
@@ -129,7 +129,7 @@ remove_subtags1([El | Els], NewEls, Name,
       _ -> remove_subtags1(Els, [El | NewEls], Name, Attr)
     end.
 
--spec(get_cdata/1 ::
+-spec(get_cdata
 (
   L :: [xmlel() | cdata()])
     -> binary()
@@ -138,7 +138,7 @@ remove_subtags1([El | Els], NewEls, Name,
 get_cdata(L) ->
     (iolist_to_binary(get_cdata(L, <<"">>))).
 
--spec(get_cdata/2 ::
+-spec(get_cdata
 (
   L :: [xmlel() | cdata()],
   S :: binary() | iolist())
@@ -150,7 +150,7 @@ get_cdata([{xmlcdata, CData} | L], S) ->
 get_cdata([_ | L], S) -> get_cdata(L, S);
 get_cdata([], S) -> S.
 
--spec(get_tag_cdata/1 ::
+-spec(get_tag_cdata
 (
   Xmlel :: xmlel())
     -> binary()
@@ -159,7 +159,7 @@ get_cdata([], S) -> S.
 get_tag_cdata(#xmlel{children = Els}) -> get_cdata(Els).
 
 %%
--spec(get_attr/2 ::
+-spec(get_attr
 (
   AttrName :: binary(),
   Attrs    :: [attr()])
@@ -174,7 +174,7 @@ get_attr(AttrName, Attrs) ->
     end.
 
 %%
--spec(get_attr_s/2 ::
+-spec(get_attr_s
 (
   AttrName :: binary(),
   Attrs    :: [attr()])
@@ -188,7 +188,7 @@ get_attr_s(AttrName, Attrs) ->
     end.
 
 %%
--spec(get_tag_attr/2 ::
+-spec(get_tag_attr
 (
   AttrName :: binary(),
   Xmlel    :: xmlel())
@@ -200,7 +200,7 @@ get_tag_attr(AttrName, #xmlel{attrs = Attrs}) ->
     get_attr(AttrName, Attrs).
 
 %%
--spec(get_tag_attr_s/2 ::
+-spec(get_tag_attr_s
 (
   AttrName :: binary(),
   Xmlel    :: xmlel())
@@ -211,7 +211,7 @@ get_tag_attr_s(AttrName, #xmlel{attrs = Attrs}) ->
     get_attr_s(AttrName, Attrs).
 
 %%
--spec(get_subtag/2 ::
+-spec(get_subtag
 (
   Xmlel :: xmlel(),
   Name  :: binary())
@@ -222,7 +222,7 @@ get_subtag(#xmlel{children = Els}, Name) ->
     get_subtag1(Els, Name).
 
 %%
--spec(get_subtag1/2 ::
+-spec(get_subtag1
 (
   Els  :: [xmlel() | cdata()],
   Name :: binary())
@@ -236,7 +236,7 @@ get_subtag1( [El | Els], Name) ->
     end;
 get_subtag1([], _) -> false.
 
--spec(get_subtags/2 ::
+-spec(get_subtags
 (
   Xmlel :: xmlel(),
   Name  :: binary())
@@ -255,7 +255,7 @@ get_subtags1([El | Els], Name, Acc) ->
     end.
 
 %%
--spec(get_subtag_with_xmlns/3 ::
+-spec(get_subtag_with_xmlns
 (
   Xmlel :: xmlel(),
   Name  :: binary(),
@@ -267,7 +267,7 @@ get_subtag_with_xmlns(#xmlel{children = Els}, Name, XMLNS) ->
     get_subtag_with_xmlns1(Els, Name, XMLNS).
 
 %%
--spec(get_subtag_with_xmlns1/3 ::
+-spec(get_subtag_with_xmlns1
 (
   Els  :: [xmlel() | cdata()],
   Name :: binary(),
@@ -290,7 +290,7 @@ get_subtag_with_xmlns1([El | Els], Name, XMLNS) ->
 get_subtag_with_xmlns1([], _, _) ->
     false.
 
--spec(get_subtags_with_xmlns/3 ::
+-spec(get_subtags_with_xmlns
 (
   Xmlel :: xmlel(),
   Name  :: binary(),
@@ -317,7 +317,7 @@ get_subtags_with_xmlns1([El | Els], Name, XMLNS, Acc) ->
     end.
 
 %%
--spec(get_subtag_cdata/2 ::
+-spec(get_subtag_cdata
 (
   Tag  :: xmlel(),
   Name :: binary())
@@ -331,7 +331,7 @@ get_subtag_cdata(Tag, Name) ->
     end.
 
 %%
--spec(append_subtags/2 ::
+-spec(append_subtags
 (
   Xmlel    :: xmlel(),
   SubTags2 :: [xmlel() | cdata()])
@@ -342,7 +342,7 @@ append_subtags(#xmlel{name = Name, attrs = Attrs, children = SubTags1}, SubTags2
     #xmlel{name = Name, attrs = Attrs, children = SubTags1 ++ SubTags2}.
 
 %%
--spec(get_path_s/2 ::
+-spec(get_path_s
 (
   El   :: xmlel(),
   Path :: [{elem, Name::binary()}
@@ -363,7 +363,7 @@ get_path_s(El, [{attr, Name}]) ->
 get_path_s(El, [cdata]) -> get_tag_cdata(El).
 
 %%
--spec(replace_tag_attr/3 ::
+-spec(replace_tag_attr
 (
   Name  :: binary(),
   Value :: binary(),
@@ -381,7 +381,7 @@ replace_tag_attr(Name, Value, Xmlel) ->
     }.
 
 
--spec(replace_subtag/2 ::
+-spec(replace_subtag
 (
   Tag   :: xmlel(),
   Xmlel :: xmlel())
